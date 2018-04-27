@@ -1,0 +1,54 @@
+# KAFKA
+  kafka :
+    container_name: kafka
+    image : spotify/kafka
+    ports:
+      - "9092:9092"
+      - "2181:2181"
+    volumes:
+      - ./kafka:/home/kafka
+    environment:
+      - TOPICS=open-data-orange
+      - ADVERTISED_HOST=kafka
+      - ADVERTISED_PORT=9092
+
+# HDFS
+  hdfs-namenode:
+    container_name: hdfs-namenode
+    image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
+    environment:
+      - CLUSTER_NAME=odbo-cluster
+    env_file:
+      - ./hadoop.env
+    ports:
+      - "50070:50070"
+      - "9000:9000"
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    env_file:
+      - ./hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "hdfs-namenode:50070"
+
+# SPARK
+  spark-master:
+    image: bde2020/spark-master:2.3.0-hadoop2.7
+    container_name: spark-master
+    ports:
+     - "8080:8080"
+     - "7077:7077"
+    environment:
+     - INIT_DAEMON_STEP=setup_spark
+     - HOSTNAME_NAMENODE=hdfs-namenode:9000
+
+  spark-worker:
+    image: bde2020/spark-worker:2.3.0-hadoop2.7
+    container_name: spark-worker-1
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+
