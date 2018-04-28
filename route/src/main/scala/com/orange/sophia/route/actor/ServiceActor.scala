@@ -3,13 +3,20 @@ package com.orange.sophia.route.actor
 import akka.actor.{Actor, ActorLogging, Props}
 
 object ServiceActor {
+  final case class Service(name: String, address: String, port: Int)
+
+  final case class Services(services: List[Service])
+
+  final case class AddService(name: String, address: String, port: Int)
+
+  final case class ServiceActionPerformed(message: String)
 
   sealed trait Command
-
   final case class GetServices() extends Command
+  final case class GetServiceByName(name: String) extends Command
 
   sealed trait ResultServiceActor
-
+  final case class DescriptionService(service: Service)
 
   def props: Props = Props[ServiceActor]
 }
@@ -27,7 +34,10 @@ class ServiceActor extends Actor with ActorLogging {
 
     case service: AddService =>
       log.info("add service + " + service.name)
-      services  += Service(service.name, service.address, service.port)
+      services += Service(service.name, service.address, service.port)
       sender() ! ServiceActionPerformed("services added.")
+
+    case namedService : GetServiceByName =>
+      services.filter(service => service.name == namedService.name).toList
   }
 }
