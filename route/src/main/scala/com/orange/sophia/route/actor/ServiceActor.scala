@@ -2,7 +2,7 @@ package com.orange.sophia.route.actor
 
 import akka.actor.{Actor, ActorLogging, Props}
 
-final case class Service(name: String, address: String, port: Integer)
+
 
 /*
 * https://github.com/spray/spray-json
@@ -17,13 +17,8 @@ object ServiceActor {
 
   final case class GetServices() extends Command
 
-  final case class AddService(name: String, address: String, port: Integer) extends Command
-
   sealed trait ResultServiceActor
 
-  final case class ServiceActionPerformed(message : String) extends ResultServiceActor
-
-  final case class DiscoverServiceResult(servicesResult : List[Service]) extends ResultServiceActor
 
   def props: Props = Props[ServiceActor]
 }
@@ -32,15 +27,15 @@ class ServiceActor extends Actor with ActorLogging {
 
   import ServiceActor._
 
-  val services = Set.empty[Service]
+  val services = Services(List())
 
   override def receive: Receive = {
     case GetServices =>
       log.info("receive to list services...")
-      sender() ! DiscoverServiceResult(services.toList)
+      sender() ! services
 
     case service: AddService =>
-      services + Service(service.name, service.address, service.port)
+      services.services.::(Service(service.name, service.address, service.port))
       sender() ! ServiceActionPerformed
   }
 }

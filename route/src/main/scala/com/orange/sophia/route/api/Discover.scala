@@ -1,13 +1,14 @@
 package com.orange.sophia.route.api
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.http.scaladsl.marshalling.ToResponseMarshaller
-import akka.http.scaladsl.model.{HttpEntity, HttpResponse, StatusCodes}
+
+import scala.concurrent.duration._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import com.orange.sophia.route.actor.{JsonSupport, Service, ServiceActor}
+import com.orange.sophia.route.actor._
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
+import akka.util.Timeout
 
 
 trait Discover extends JsonSupport {
@@ -16,25 +17,27 @@ trait Discover extends JsonSupport {
 
   implicit def system: ActorSystem
 
-  def discoverActor: ActorRef = system.actorOf(Props[ServiceActor])
+  implicit def discoverActor: ActorRef
 
   private val actorMaterializer = ActorMaterializer
+
+  implicit lazy val timeout = Timeout(5.seconds) // usually we'd obtain the timeout from the system's configuration
 
   case class ListService()
 
   val discoverRoute: Route = concat(
     path("list") {
       get {
-        val services = ask(discoverActor, GetServices).mapTo[DiscoverServiceResult]
+        val services = (discoverActor ? GetServices).mapTo[Services]
         logRequest("asking for list of micro-service...")
-        complete(HttpResponse(entity = services).withStatus(StatusCodes.OK))
+        complete("lol")
       }
     },
     path("addService") {
       post {
         entity(as[AddService]) { service =>
           val serviceAdded = ask(discoverActor, service).mapTo[ServiceActionPerformed]
-          complete(discoverMarshal(serviceAdded))
+          complete("lolilol")
         }
       }
     }
