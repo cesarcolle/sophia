@@ -30,14 +30,14 @@ trait Discover extends JsonSupport {
       get {
         val services = (discoverActor ? GetServices).mapTo[Services]
         logRequest("asking for list of micro-service...")
-        complete("lol")
+        complete(services)
       }
     },
     path("addService") {
       post {
         entity(as[AddService]) { service =>
           val serviceAdded = ask(discoverActor, service).mapTo[ServiceActionPerformed]
-          complete("lolilol")
+          complete(serviceAdded)
         }
       }
     }
