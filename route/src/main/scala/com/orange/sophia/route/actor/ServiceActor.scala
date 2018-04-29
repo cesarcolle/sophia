@@ -17,6 +17,7 @@ object ServiceActor {
 
   sealed trait ResultServiceActor
   final case class DescriptionService(service: Service)
+  final case class NamedServices(services: List[Service])
 
   def props: Props = Props[ServiceActor]
 }
@@ -38,6 +39,9 @@ class ServiceActor extends Actor with ActorLogging {
       sender() ! ServiceActionPerformed("services added.")
 
     case namedService : GetServiceByName =>
-      services.filter(service => service.name == namedService.name).toList
+      log.info("searching services name : " + namedService.name)
+      val filteredService= services.filter(service => service.name == namedService.name)
+      log.info("find " + filteredService)
+      sender() ! NamedServices(filteredService.toList)
   }
 }

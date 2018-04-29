@@ -39,7 +39,17 @@ trait Discover extends JsonSupport {
           complete(serviceAdded)
         }
       }
+    },
+    path("getService") {
+      get {
+        parameter('nameService) { nameService =>
+          val servicesDescritpion = (discoverActor ? GetServiceByName(nameService)).mapTo[NamedServices]
+          complete(servicesDescritpion)
+        }
+      }
+
     }
+
   )
 
 }

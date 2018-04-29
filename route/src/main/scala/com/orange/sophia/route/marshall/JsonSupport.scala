@@ -13,4 +13,7 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
 
   implicit val addServiceFormat: RootJsonFormat[AddService] = jsonFormat3(AddService)
   implicit val serviceActionPerformedFormat: RootJsonFormat[ServiceActionPerformed] = jsonFormat1(ServiceActionPerformed)
+
+  implicit val namedServiceFormat: RootJsonFormat[NamedServices] = jsonFormat1(NamedServices)
+
 }
