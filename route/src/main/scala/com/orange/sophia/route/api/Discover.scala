@@ -43,11 +43,10 @@ trait Discover extends JsonSupport {
     path("getService") {
       get {
         parameter('nameService) { nameService =>
-          val servicesDescritpion = (discoverActor ? GetServiceByName(nameService)).mapTo[NamedServices]
-          complete(servicesDescritpion)
+          val servicesDescription = (discoverActor ? GetServiceByName(nameService)).mapTo[NamedServices]
+          complete(servicesDescription)
         }
       }
-
     }
 
   )

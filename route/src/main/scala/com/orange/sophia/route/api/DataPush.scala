@@ -8,13 +8,12 @@ import akka.http.scaladsl.server.Directives._
 
 trait DataPush extends JsonSupport {
 
-  implicit val hdfsActor : ActorRef
+  implicit val hdfsActor: ActorRef
 
   val route = concat(
-    path("push"){
-      (post & entity(as[Multipart.FormData])){ fileData =>
-        complete{
-
+    path("push") {
+      (post & entity(as[Multipart.FormData])) { fileData =>
+        complete {
           HttpResponse(StatusCodes.OK)
         }
       }
