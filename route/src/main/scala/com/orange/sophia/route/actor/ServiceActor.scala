@@ -1,6 +1,9 @@
 package com.orange.sophia.route.actor
 
-import akka.actor.{Actor, ActorLogging, Props}
+import java.util.concurrent.ConcurrentHashMap
+
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+
 
 object ServiceActor {
 
@@ -31,27 +34,22 @@ class ServiceActor extends Actor with ActorLogging {
 
   import ServiceActor._
 
-  var services :  Set[Service] = Set.empty[Service]
-  var lol = List.empty[String]
-  override def receive: Receive = {
-    case GetServices =>
-      lol = "get" :: lol
-      log.info("receive to list services..." + services.toList)
+  def active(services: Map[String, Service]): Receive = {
 
-      sender() ! Services(services.toList)
+    case service@AddService(name, address, port) =>
+      context become active(services + (name -> Service(name, address, port)))
 
-
-    case service: AddService =>
-      log.info("add service + " + service.name)
-      services  += Service(service.name, service.address, service.port)
-      log.info("new services list : " + services)
+      log.info("states become :: " + services)
       sender() ! ServiceActionPerformed("services added.")
 
-    case namedService: GetServiceByName =>
-      log.info("searching services name : " + namedService.name + services)
-      val filteredService = services.find(_.name == namedService.name)
-      log.info("find " + filteredService)
-      sender() ! NamedServices(filteredService.toList)
-      println("Lolist == " + lol)
+    case namedService@GetServiceByName(name) =>
+      log.info("find service by name")
+      val serviceFiltered = services.get(name)
+      sender() ! NamedServices(serviceFiltered.toList)
+
+    case GetServices =>
+      sender() ! Services(services.values.toList)
   }
+
+  override def receive: Receive = active(Map.empty)
 }
