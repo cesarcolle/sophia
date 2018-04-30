@@ -22,5 +22,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-testkit" % "2.5.12" % Test,
   "org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "com.typesafe.akka" %% "akka-persistence" % "2.5.12"
+  "com.typesafe.akka" %% "akka-persistence" % "2.5.12",
+  "org.iq80.leveldb"            % "leveldb"          % "0.7",
+"org.fusesource.leveldbjni"   % "leveldbjni-all"   % "1.8"
 )

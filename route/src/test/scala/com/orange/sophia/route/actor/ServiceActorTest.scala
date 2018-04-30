@@ -23,7 +23,7 @@ class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with Implici
     "find a service by name" must {
       "find nothing because it's empty" in {
         serviceActor ! GetServiceByName("test")
-        expectMsg(NamedServices(null))
+        expectMsg(NamedServices(List()))
       }
     }
 
@@ -34,7 +34,7 @@ class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with Implici
         serviceActor ! GetServiceByName("hey")
         // wait before ...
         within(600 millis){
-          expectMsg(NamedServices(Service("hey", "ho", 1012)))
+          expectMsg(NamedServices(List(Service("hey", "ho", 1012))))
         }
       }
     }

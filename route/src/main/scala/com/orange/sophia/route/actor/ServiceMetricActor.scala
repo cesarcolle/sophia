@@ -1,7 +1,8 @@
 package com.orange.sophia.route.actor
 
-import akka.persistence.PersistentActor
-import com.orange.sophia.route.actor.ServiceActor.{AddService, GetServices, Service}
+import akka.actor.Props
+import akka.persistence.{AtLeastOnceDelivery, PersistentActor}
+import com.orange.sophia.route.actor.ServiceActor._
 
 object ServiceMetricActor {
 
@@ -11,24 +12,30 @@ object ServiceMetricActor {
   sealed trait PersistCommand
   case class ServiceRecovering() extends PersistCommand
 
+  val props = Props[ServiceMetricActor]
 }
 
 case class ServiceMetricsEntity(services : List[Service], utilization : Map[String, Int])
 
 
-class ServiceMetricActor extends PersistentActor {
+class ServiceMetricActor extends PersistentActor  {
 
   val metrics : ServiceMetricsEntity = ServiceMetricsEntity(List.empty[Service], Map.empty[String, Int])
 
-  override def receiveRecover: Receive = ???
+  override def receiveRecover: Receive = {
+    case service@AddService(name, address, port) =>
+      metrics.services.+:(name -> Service(name, address, port))
+
+  }
 
   override def receiveCommand: Receive = {
-    case AddService(name, address, port) =>
-      persist(AddService) { service =>
-        metrics.services.+:(Service(name, address, port))
+    case service@AddService(name, address, port) =>
+      persist(service) { service =>
+        metrics.services.+:(name -> Service(name, address, port))
+        sender() ! ServiceActionPerformed("services added.")
       }
     case GetServices =>
-      sender() ! metrics.services.size
+      sender() ! Services(metrics.services)
 
   }
 

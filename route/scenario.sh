@@ -8,18 +8,11 @@ echo "add abc service"
 curl -H "Content-Type: application/json" -X POST -d '{"name":"abc", "address" : "456.com", "port":456}' http://localhost:8080/addService
 
 
-sleep 5
-echo "list all services"
-curl -X GET http://localhost:8080/list
-
 #echo "list all services"
 #curl -X GET http://localhost:8080/list
 #
 #echo "list all services"
 #curl -X GET http://localhost:8080/list
-#
-echo "list all services"
-curl -X GET http://localhost:8080/list
 #
 #sleep 5
 #echo "find service xyz"

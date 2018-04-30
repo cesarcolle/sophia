@@ -1,9 +1,10 @@
 package com.orange.sophia.route.actor
 
-import java.util.concurrent.ConcurrentHashMap
-
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-
+import akka.stream.ActorMaterializer
+import akka.pattern.{ask, pipe}
+import scala.concurrent.duration._
+import akka.util.Timeout
 
 object ServiceActor {
 
@@ -31,17 +32,23 @@ object ServiceActor {
 }
 
 class ServiceActor extends Actor with ActorLogging {
-
+  import context.dispatcher
   import ServiceActor._
+
+  implicit val timeout = Timeout(5 seconds) // needed for `?` below
+  val persistent = context.actorOf(Props[ServiceMetricActor])
+
+  val materializer = ActorMaterializer()
+
 
   def active(services: Map[String, Service]): Receive = {
 
     case service@AddService(name, address, port) =>
       context become active(services + (name -> Service(name, address, port)))
-
       log.info("states become :: " + services)
-      sender() ! ServiceActionPerformed("services added.")
-
+      val content = ask(persistent, service).mapTo[ServiceActionPerformed]
+      pipe(content) to sender()
+      
     case namedService@GetServiceByName(name) =>
       log.info("find service by name")
       val serviceFiltered = services.get(name)
