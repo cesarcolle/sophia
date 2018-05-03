@@ -40,19 +40,17 @@ class ServiceActor extends Actor with ActorLogging {
   implicit val timeout = Timeout(5 seconds) // needed for `?` below
   //val persistent = context.actorOf(Props[ServiceMetricActor])
 
-  var allServices : ListBuffer[Service] =  ListBuffer.empty
+  var allServices : List[Service] = List.empty[Service]
 
   val materializer = ActorMaterializer()
 
-
-  def active(services: Map[String, Service]): Receive = {
+  override def receive: Receive = {
 
     case service@AddService(name, address, port) =>
-      log.info("before add :: " + allServices)
-      allServices.append(Service(name, address, port))
+      allServices = Service(name, address, port) :: allServices
       log.info("after add :: " + allServices)
       sender() ! ServiceActionPerformed("GG")
-      
+
     case namedService@GetServiceByName(name) =>
       log.info("find service by name")
       log.info("services ::" + allServices)
@@ -63,6 +61,4 @@ class ServiceActor extends Actor with ActorLogging {
       log.info("services ::" + allServices)
       sender() ! Services(allServices.toList)
   }
-
-  override def receive: Receive = active(Map.empty)
 }

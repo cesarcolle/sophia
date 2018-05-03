@@ -8,6 +8,7 @@ import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
+import com.orange.sophia.route.actor.ServiceActor
 import com.orange.sophia.route.marshall.JsonSupport
 
 
@@ -17,7 +18,7 @@ trait Discover extends JsonSupport {
 
   implicit def system: ActorSystem
 
-  implicit def discoverActor: ActorRef
+  val discoverActor: ActorRef = system.actorOf(Props[ServiceActor])
 
   private val actorMaterializer = ActorMaterializer
 

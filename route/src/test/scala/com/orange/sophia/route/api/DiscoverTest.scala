@@ -32,6 +32,5 @@ class DiscoverTest extends FunSuite with Discover with Matchers with ScalatestRo
     }
   }
 
-  override implicit def discoverActor: ActorRef = system.actorOf(ServiceActor.props)
 
 }

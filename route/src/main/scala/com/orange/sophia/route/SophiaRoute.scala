@@ -15,9 +15,6 @@ object SophiaRoute extends Discover {
   override implicit def system: ActorSystem = ActorSystem("Sophia-system")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
-  override implicit def discoverActor: ActorRef = system.actorOf(ServiceActor.props, "servicesActor")
-
-
   lazy val routes: Route = discoverRoute
 
   def main(args: Array[String]): Unit = {
