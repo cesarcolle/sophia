@@ -12,17 +12,17 @@ mainClass in(Compile, run) := Some("com.orange.sophia.route.SophiaRoute")
 
 
 libraryDependencies ++= Seq(
-  "com.typesafe.akka" %% "akka-actor" % "2.5.12",
-  "com.typesafe.akka" %% "akka-testkit" % "2.5.12" % Test,
-  "com.typesafe.akka" %% "akka-stream" % "2.5.12",
-  "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.12" % Test,
-  "com.typesafe.akka" %% "akka-http" % "10.1.1",
-  "com.typesafe.akka" %% "akka-http-testkit" % "10.1.1" % Test,
-  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.1",
-  "com.typesafe.akka" %% "akka-testkit" % "2.5.12" % Test,
-  "org.scalactic" %% "scalactic" % "3.0.5",
-  "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "com.typesafe.akka" %% "akka-persistence" % "2.5.12",
-  "org.iq80.leveldb"            % "leveldb"          % "0.7",
-"org.fusesource.leveldbjni"   % "leveldbjni-all"   % "1.8"
+  "com.typesafe.akka" % "akka-actor" % "2.5.12",
+  "com.typesafe.akka" % "akka-testkit" % "2.5.12" % Test,
+  "com.typesafe.akka" % "akka-stream" % "2.5.12",
+  "com.typesafe.akka" % "akka-stream-testkit" % "2.5.12" % Test,
+  "com.typesafe.akka" % "akka-http" % "10.1.1",
+  "com.typesafe.akka" % "akka-http-testkit" % "10.1.1" % Test,
+  "com.typesafe.akka" % "akka-http-spray-json" % "10.1.1",
+  "com.typesafe.akka" % "akka-testkit" % "2.5.12" % Test,
+  "org.scalactic" % "scalactic" % "3.0.5",
+  "org.scalatest" % "scalatest" % "3.0.5" % "test",
+  "com.typesafe.akka" % "akka-persistence" % "2.5.12",
+  "org.iq80.leveldb" % "leveldb" % "0.7",
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8"
 )

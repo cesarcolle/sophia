@@ -3,8 +3,11 @@ package com.orange.sophia.route.actor
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.stream.ActorMaterializer
 import akka.pattern.{ask, pipe}
+
 import scala.concurrent.duration._
 import akka.util.Timeout
+
+import scala.collection.mutable.ListBuffer
 
 object ServiceActor {
 
@@ -32,11 +35,12 @@ object ServiceActor {
 }
 
 class ServiceActor extends Actor with ActorLogging {
-  import context.dispatcher
   import ServiceActor._
 
   implicit val timeout = Timeout(5 seconds) // needed for `?` below
-  val persistent = context.actorOf(Props[ServiceMetricActor])
+  //val persistent = context.actorOf(Props[ServiceMetricActor])
+
+  var allServices : ListBuffer[Service] =  ListBuffer.empty
 
   val materializer = ActorMaterializer()
 
@@ -44,18 +48,20 @@ class ServiceActor extends Actor with ActorLogging {
   def active(services: Map[String, Service]): Receive = {
 
     case service@AddService(name, address, port) =>
-      context become active(services + (name -> Service(name, address, port)))
-      log.info("states become :: " + services)
-      val content = ask(persistent, service).mapTo[ServiceActionPerformed]
-      pipe(content) to sender()
+      log.info("before add :: " + allServices)
+      allServices.append(Service(name, address, port))
+      log.info("after add :: " + allServices)
+      sender() ! ServiceActionPerformed("GG")
       
     case namedService@GetServiceByName(name) =>
       log.info("find service by name")
-      val serviceFiltered = services.get(name)
-      sender() ! NamedServices(serviceFiltered.toList)
+      log.info("services ::" + allServices)
+      //val serviceFiltered = services.get(name)
+      sender() ! NamedServices(List())
 
     case GetServices =>
-      sender() ! Services(services.values.toList)
+      log.info("services ::" + allServices)
+      sender() ! Services(allServices.toList)
   }
 
   override def receive: Receive = active(Map.empty)

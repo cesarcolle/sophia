@@ -33,12 +33,11 @@ class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with Implici
         expectMsg(ServiceActionPerformed("services added."))
         serviceActor ! GetServiceByName("hey")
         // wait before ...
-        within(600 millis){
+        within(600 millis) {
           expectMsg(NamedServices(List(Service("hey", "ho", 1012))))
         }
       }
     }
-
 
 
   }
