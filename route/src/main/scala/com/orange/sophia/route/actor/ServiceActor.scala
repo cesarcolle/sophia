@@ -48,17 +48,12 @@ class ServiceActor extends Actor with ActorLogging {
 
     case service@AddService(name, address, port) =>
       allServices = Service(name, address, port) :: allServices
-      log.info("after add :: " + allServices)
-      sender() ! ServiceActionPerformed("GG")
+      sender() ! ServiceActionPerformed("action performed")
 
     case namedService@GetServiceByName(name) =>
-      log.info("find service by name")
-      log.info("services ::" + allServices)
-      //val serviceFiltered = services.get(name)
       sender() ! NamedServices(List())
 
     case GetServices =>
-      log.info("services ::" + allServices)
       sender() ! Services(allServices.toList)
   }
 }

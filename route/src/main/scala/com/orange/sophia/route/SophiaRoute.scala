@@ -4,7 +4,6 @@ import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import com.orange.sophia.route.actor.ServiceActor
 import com.orange.sophia.route.api.Discover
 
 import scala.concurrent.Await
