@@ -10,6 +10,7 @@ lazy val buildSettings = Seq(
 )
 mainClass in(Compile, run) := Some("com.orange.sophia.route.SophiaRoute")
 
+
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.5.12",
   "com.typesafe.akka" %% "akka-testkit" % "2.5.12" % Test,
@@ -21,5 +22,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
   "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.1",
   "com.typesafe.akka" %% "akka-persistence" % "2.5.12",
-  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8"
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+  "org.apache.hadoop" % "hadoop-client" % "2.7.2" % "provided",
+  "org.apache.hadoop" % "hadoop-hdfs" % "2.7.2" % "test" classifier "tests",
+  "org.apache.hadoop" % "hadoop-common" % "2.7.2" % "test" classifier "tests"
 )

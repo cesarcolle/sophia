@@ -1,6 +1,6 @@
 package com.orange.sophia.route
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
@@ -12,6 +12,7 @@ import scala.concurrent.duration.Duration
 object SophiaRoute extends Discover {
 
   override implicit def system: ActorSystem = ActorSystem("Sophia-system")
+
   implicit val materializer: ActorMaterializer = ActorMaterializer()
 
   lazy val routes: Route = discoverRoute

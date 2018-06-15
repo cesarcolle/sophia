@@ -3,10 +3,9 @@ package com.orange.sophia.route.actor
 import akka.actor.{ActorRef, ActorSystem}
 import akka.testkit.{ImplicitSender, TestKit}
 import com.orange.sophia.route.actor.ServiceActor._
-import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers, WordSpecLike}
+import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.concurrent.duration._
-import scala.concurrent.Await
 
 
 class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with ImplicitSender with Matchers with WordSpecLike {

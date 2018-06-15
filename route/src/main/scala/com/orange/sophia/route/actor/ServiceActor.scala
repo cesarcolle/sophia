@@ -1,13 +1,10 @@
 package com.orange.sophia.route.actor
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import akka.actor.{Actor, ActorLogging, Props}
 import akka.stream.ActorMaterializer
-import akka.pattern.{ask, pipe}
-
-import scala.concurrent.duration._
 import akka.util.Timeout
 
-import scala.collection.mutable.ListBuffer
+import scala.concurrent.duration._
 
 object ServiceActor {
 
@@ -35,12 +32,12 @@ object ServiceActor {
 }
 
 class ServiceActor extends Actor with ActorLogging {
+
   import ServiceActor._
 
   implicit val timeout = Timeout(5 seconds) // needed for `?` below
-  //val persistent = context.actorOf(Props[ServiceMetricActor])
 
-  var allServices : List[Service] = List.empty[Service]
+  var allServices: List[Service] = List.empty[Service]
 
   val materializer = ActorMaterializer()
 
@@ -51,7 +48,7 @@ class ServiceActor extends Actor with ActorLogging {
       sender() ! ServiceActionPerformed("action performed")
 
     case namedService@GetServiceByName(name) =>
-      sender() ! NamedServices(List())
+      sender() ! NamedServices(allServices.filter(_.name == name))
 
     case GetServices =>
       sender() ! Services(allServices.toList)

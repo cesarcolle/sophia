@@ -1,14 +1,11 @@
 package com.orange.sophia.route.api
 
-import akka.actor.ActorRef
-import org.scalatest.concurrent.ScalaFutures
 import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.orange.sophia.route.actor.ServiceActor
 import com.orange.sophia.route.actor.ServiceActor.AddService
-import org.scalatest.FunSuite
-import org.scalatest.Matchers
+import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.concurrent.ScalaFutures
 
 class DiscoverTest extends FunSuite with Discover with Matchers with ScalatestRouteTest with ScalaFutures {
 

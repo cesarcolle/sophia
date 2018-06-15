@@ -5,8 +5,6 @@ import com.orange.sophia.route.actor.ServiceActor._
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 
-
-
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val serviceFormat: RootJsonFormat[Service] = jsonFormat3(Service)
   implicit val servicesFormat: RootJsonFormat[Services] = jsonFormat1(Services)

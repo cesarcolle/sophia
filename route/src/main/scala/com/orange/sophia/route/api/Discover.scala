@@ -1,15 +1,15 @@
 package com.orange.sophia.route.api
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-
-import scala.concurrent.duration._
-import akka.http.scaladsl.server.Route
-import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.pattern.ask
+import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.orange.sophia.route.actor.ServiceActor
 import com.orange.sophia.route.marshall.JsonSupport
+
+import scala.concurrent.duration._
 
 
 trait Discover extends JsonSupport {

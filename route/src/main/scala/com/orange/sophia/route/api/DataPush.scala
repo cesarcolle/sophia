@@ -1,24 +1,38 @@
 package com.orange.sophia.route.api
 
-import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.http.scaladsl.model.{HttpEntity, HttpResponse, Multipart, StatusCodes}
-import com.orange.sophia.route.marshall.JsonSupport
+import akka.actor.ActorSystem
 import akka.http.scaladsl.server.Directives._
-import com.orange.sophia.route.actor.HdfsActor
+import akka.http.scaladsl.server.Route
+import akka.stream.Materializer
+import com.orange.sophia.route.marshall.JsonSupport
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.{FileSystem, Path}
 
 
 trait DataPush extends JsonSupport {
 
-  val hdfsActor: ActorRef = system.actorOf(Props[HdfsActor])
   implicit def system: ActorSystem
 
-  val route = concat(
-    path("push") {
-      (post & entity(as[Multipart.FormData])) { fileData =>
-        complete {
-          HttpResponse(StatusCodes.OK)
-        }
+  var hdfsAdress = sys.env.getOrElse("HDFS_NAMENODE", "empty")
+
+
+  def pushToHDFS(hdfsAddress : String): FileSystem ={
+    val conf = new Configuration()
+    conf.set("fs.defaultFS", hdfsAdress)
+    FileSystem.get(conf)
+  }
+
+  val routeDataPush: Route = path("push") {
+    extractRequestContext { ctx =>
+      implicit val materializer: Materializer = ctx.materializer
+      fileUpload("csv") {
+        case (metadata, byteSource) =>
+          val newHDFSfile = pushToHDFS(hdfsAdress).create(new Path(metadata.fileName))
+          println(metadata.fieldName + " " + metadata.fileName)
+          byteSource.runForeach(byte => newHDFSfile.write(byte.utf8String.getBytes))
+          complete(s"succes")
+
       }
     }
-  )
+  }
 }
