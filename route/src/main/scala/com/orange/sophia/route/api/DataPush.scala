@@ -25,7 +25,8 @@ trait DataPush extends JsonSupport {
   val routeDataPush: Route = path("push") {
     extractRequestContext { ctx =>
       implicit val materializer: Materializer = ctx.materializer
-      fileUpload("csv") {
+
+      fileUpload("data") {
         case (metadata, byteSource) =>
           val newHDFSfile = pushToHDFS(hdfsAdress).create(new Path(metadata.fileName))
           println(metadata.fieldName + " " + metadata.fileName)

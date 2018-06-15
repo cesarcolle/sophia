@@ -4,7 +4,7 @@ Sophia is a system who will allow you to use several model.
 
 ## Definition
 
-![sophia-definition](doc/sophia.png)
+![sophia-definition](https://gitlab.forge.orange-labs.fr/xnpq6269/sophia/raw/master/doc/sophia.png)
 
 
 Based on the SMACK architecture, Sophia want to provide several data model for users.
@@ -21,3 +21,21 @@ The new model will be push to the micro-service associated (that's the initial v
 
 ### Micro-service
 Micro-service are designed for asking about classification request or more. The future below would be to adding new akka route to make an aggregation of classification answer.
+
+
+
+## How it work
+
+Sophia provide api design to manage you services : 
+
+#### Service management
+* /list to list all the services available.
+* /addService to register a service to the project.
+* /getService provide a service given the specific name.
+#### HDFS
+It's possible to push your data in a HDFS cluster through :
+* /push 
+
+you can use it like : 
+
+    curl --form "data=@path/to/file" http://localhost:8080/push
