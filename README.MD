@@ -4,7 +4,7 @@ Sophia is a system who will allow you to use several model.
 
 ## Definition
 
-![sophia-definition](https://gitlab.forge.orange-labs.fr/xnpq6269/sophia/raw/master/doc/sophia.png)
+![sophia-definition](doc/sophia.png)
 
 
 Based on the SMACK architecture, Sophia want to provide several data model for users.
