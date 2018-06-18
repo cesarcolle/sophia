@@ -21,11 +21,12 @@ libraryDependencies ++= Seq(
   "org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
   "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.1",
+
   "com.typesafe.akka" %% "akka-persistence" % "2.5.12",
+  "org.iq80.leveldb"            % "leveldb"          % "0.7",
   "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+
   "org.apache.hadoop" % "hadoop-client" % "2.7.2" % "provided",
   "org.apache.hadoop" % "hadoop-hdfs" % "2.7.2" % "test" classifier "tests",
-  "org.apache.hadoop" % "hadoop-common" % "2.7.2" % "test" classifier "tests",
-  "org.iq80.leveldb"            % "leveldb"          % "0.7",
-  "org.fusesource.leveldbjni"   % "leveldbjni-all"   % "1.8"
+  "org.apache.hadoop" % "hadoop-common" % "2.7.2" % "test" classifier "tests"
 )
