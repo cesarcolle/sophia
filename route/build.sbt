@@ -25,5 +25,7 @@ libraryDependencies ++= Seq(
   "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
   "org.apache.hadoop" % "hadoop-client" % "2.7.2" % "provided",
   "org.apache.hadoop" % "hadoop-hdfs" % "2.7.2" % "test" classifier "tests",
-  "org.apache.hadoop" % "hadoop-common" % "2.7.2" % "test" classifier "tests"
+  "org.apache.hadoop" % "hadoop-common" % "2.7.2" % "test" classifier "tests",
+  "org.iq80.leveldb"            % "leveldb"          % "0.7",
+  "org.fusesource.leveldbjni"   % "leveldbjni-all"   % "1.8"
 )
