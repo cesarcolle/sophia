@@ -5,6 +5,7 @@ import akka.persistence.{PersistentActor, RecoveryCompleted, SnapshotOffer}
 
 object PersistenceServiceActor{
 
+  case class Format(schema : String, learningField : String )
 
   // addFormat
   case class AddFormat(name : String, schema : String)

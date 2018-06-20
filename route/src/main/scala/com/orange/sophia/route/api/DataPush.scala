@@ -3,10 +3,8 @@ package com.orange.sophia.route.api
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.pattern.ask
 import akka.stream.Materializer
 import com.orange.sophia.route.actor.PersistenceServiceActor
-import com.orange.sophia.route.actor.PersistenceServiceActor.{AskFormatForService, FormatService}
 import com.orange.sophia.route.marshall.JsonSupport
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
