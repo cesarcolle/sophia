@@ -49,7 +49,6 @@ trait Discover extends JsonSupport {
         }
       }
     }
-
   )
 
 }

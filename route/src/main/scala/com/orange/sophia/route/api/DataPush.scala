@@ -29,7 +29,6 @@ trait DataPush extends JsonSupport {
       fileUpload("data") {
         case (metadata, byteSource) =>
           val newHDFSfile = pushToHDFS(hdfsAdress).create(new Path(metadata.fileName))
-          println(metadata.fieldName + " " + metadata.fileName)
           byteSource.runForeach(byte => newHDFSfile.write(byte.utf8String.getBytes))
           complete(s"succes")
 

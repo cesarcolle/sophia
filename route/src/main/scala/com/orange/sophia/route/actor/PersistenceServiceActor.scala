@@ -32,9 +32,7 @@ object PersistenceServiceActor{
     }
 
     def addServiceFormat(nameService : String, formatService : List[String]): ServiceFormatState = {
-      println("state :: " + serviceForms)
       if (!formats.keys.forall(formatService.contains) && serviceForms.nonEmpty) throw new IllegalArgumentException("bad format description given ")
-      println("nameService " + nameService + "RETURN THE FORMAT ez"  + formats + " " + serviceForms.get(nameService))
       serviceForms.get(nameService) match {
         case Some(xs: List[String]) => copy(serviceForms.updated(nameService, xs ++ formatService ), formats)
         case None => copy(serviceForms + (nameService -> formatService), formats)
@@ -61,7 +59,6 @@ class PersistenceServiceActor extends PersistentActor with ActorLogging{
 
   def updateServiceFormat(serviceFormat : AddServiceFormat): Unit ={
     state = state.addServiceFormat(serviceFormat.nameService, serviceFormat.formatService)
-    log.info("After :: " + state.serviceForms)
   }
 
   override def receiveRecover: Receive = {
