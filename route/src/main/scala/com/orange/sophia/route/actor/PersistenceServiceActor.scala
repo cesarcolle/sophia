@@ -2,7 +2,6 @@ package com.orange.sophia.route.actor
 
 import akka.actor.{ActorLogging, Props}
 import akka.persistence.{PersistentActor, RecoveryCompleted, SnapshotOffer}
-import com.orange.sophia.route.actor.PersistenceServiceActor._
 
 object PersistenceServiceActor{
 
@@ -13,6 +12,9 @@ object PersistenceServiceActor{
 
   case class StatusService(sizeStatus : Int)
   case class StatusFormat(sizeFormat : Int)
+
+  case class AskFormatForService(serviceName : String)
+  case class FormatService(list: List[String])
 
   def props: Props = Props[PersistenceServiceActor]
 
@@ -25,6 +27,13 @@ object PersistenceServiceActor{
 
     def sizeService() : Int = {
       serviceForms.size
+    }
+
+    def getFormat(serviceName : String): List[String] ={
+      serviceForms.get(serviceName) match {
+        case Some(xs : List[String]) => xs.map(formats(_))
+        case None => throw new IllegalArgumentException("bad service Name given.")
+      }
     }
 
     def addFormat(nameFormat : String, schema : String): ServiceFormatState ={
@@ -42,6 +51,7 @@ object PersistenceServiceActor{
 }
 
 class PersistenceServiceActor extends PersistentActor with ActorLogging{
+  import PersistenceServiceActor._
 
   var state = ServiceFormatState()
 
@@ -81,6 +91,11 @@ class PersistenceServiceActor extends PersistentActor with ActorLogging{
         updateFormat(format)
         sender() ! StatusFormat(state.sizeFormat())
       }
+
+    case AskFormatForService(name) =>
+      sender() ! FormatService(state.getFormat(name))
+
+
     case _ =>
   }
 
