@@ -9,12 +9,14 @@ object PersistenceServiceActor{
   // addFormat
   case class AddFormat(name : String, schema : String)
   case class AddServiceFormat(nameService : String, formatService : List[String])
-
+  // answer
   case class StatusService(sizeStatus : Int)
   case class StatusFormat(sizeFormat : Int)
-
+  // ask
   case class AskFormatForService(serviceName : String)
   case class FormatService(list: List[String])
+
+  //
 
   def props: Props = Props[PersistenceServiceActor]
 
