@@ -1,10 +1,9 @@
 package com.orange.sophia.route.api
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.Materializer
-import com.orange.sophia.route.actor.PersistenceServiceActor
 import com.orange.sophia.route.marshall.JsonSupport
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path}
@@ -15,7 +14,6 @@ trait DataPush extends JsonSupport {
   implicit def system: ActorSystem
 
   var hdfsAdress: String = sys.env.getOrElse("HDFS_NAMENODE", "empty")
-  val actorFormat: ActorRef = system.actorOf(PersistenceServiceActor.props)
 
   def HDFSFilesystem(hdfsAddress: String): FileSystem = {
     val conf = new Configuration()

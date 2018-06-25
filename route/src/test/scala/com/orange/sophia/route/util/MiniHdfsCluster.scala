@@ -6,7 +6,6 @@ import java.nio.file.{Files, Paths}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, FileUtil, Path}
 import org.apache.hadoop.hdfs.MiniDFSCluster
-
 object MiniHdfsCluster {
 
   val TEST_DIR = "src/test/resources/hdfs"

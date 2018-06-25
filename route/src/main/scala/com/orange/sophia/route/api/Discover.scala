@@ -16,16 +16,14 @@ trait Discover extends JsonSupport {
 
   import com.orange.sophia.route.actor.ServiceActor._
 
-  implicit def system: ActorSystem
-
-  val discoverActor: ActorRef = system.actorOf(Props[ServiceActor])
+  def discoverActor: ActorRef
 
   private val actorMaterializer = ActorMaterializer
 
   implicit lazy val timeout = Timeout(5.seconds) // usually we'd obtain the timeout from the system's configuration
 
 
-  val discoverRoute: Route = concat(
+  lazy val discoverRoute: Route = concat(
     path("list") {
       get {
         val services = (discoverActor ? GetServices).mapTo[Services]

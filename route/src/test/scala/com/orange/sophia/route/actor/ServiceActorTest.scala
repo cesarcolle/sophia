@@ -8,7 +8,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 import scala.concurrent.duration._
 
 
-class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with ImplicitSender with Matchers with WordSpecLike {
+class ServiceActorTest extends TestKit(ActorSystem("ServiceActor")) with ImplicitSender with Matchers with WordSpecLike {
 
   val serviceActor: ActorRef = system.actorOf(ServiceActor.props)
   val addService = AddService("hey", "ho", 1012)
@@ -16,7 +16,7 @@ class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with Implici
   "The service actor" must {
     "register a service and send good answer" in {
       serviceActor ! addService
-      expectMsg(ServiceActionPerformed("services added."))
+      expectMsg(ServiceActionPerformed("action performed"))
     }
 
     "find a service by name" must {
@@ -29,11 +29,11 @@ class ServiceActorTest extends TestKit(ActorSystem("serviceActor")) with Implici
     "add a service and find the service" must {
       "add a service " in {
         val result = serviceActor ! addService
-        expectMsg(ServiceActionPerformed("services added."))
+        expectMsg(ServiceActionPerformed("action performed"))
         serviceActor ! GetServiceByName("hey")
         // wait before ...
         within(600 millis) {
-          expectMsg(NamedServices(List(Service("hey", "ho", 1012))))
+          expectMsg(NamedServices(List(Service("hey", "ho", 1012), Service("hey", "ho", 1012))))
         }
       }
     }
