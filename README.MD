@@ -1,6 +1,10 @@
 # Sophia
 
-Sophia is a system who will allow you to use several model.
+Sophia is a system who will allow you to use several model for classification.
+
+I build Sophia for experiment around SMACK architecture.
+Architecture will grow.
+
 
 ## Definition
 
