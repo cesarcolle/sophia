@@ -8,7 +8,7 @@ lazy val buildSettings = Seq(
   organization := "com.orange.sophia.route",
   version := "2.4-SNAPSHOT"
 )
-mainClass in(Compile, run) := Some("com.orange.sophia.route.SophiaRoute")
+mainClass in(Compile, run) := Some("com.sophia.route.SophiaRoute")
 
 
 libraryDependencies ++= Seq(
